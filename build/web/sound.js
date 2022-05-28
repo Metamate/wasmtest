@@ -1,10 +1,4 @@
-<html><head>
-    
-
-<link rel="preload" href="/wasmtest/wasmtest-230700b50ec3d313_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
-<link rel="modulepreload" href="/wasmtest/wasmtest-230700b50ec3d313.js"></head>
-<body>
-    <script>// Insert hack to make sound autoplay on Chrome as soon as the user interacts with the tab:
+// Insert hack to make sound autoplay on Chrome as soon as the user interacts with the tab:
 // https://developers.google.com/web/updates/2018/11/web-audio-autoplay#moving-forward
 
 // the following function keeps track of all AudioContexts and resumes them on the first user
@@ -66,7 +60,3 @@
     document.addEventListener(eventName, resumeAllContexts);
   });
 })();
-</script>
-
-
-<script type="module">import init from '/wasmtest/wasmtest-230700b50ec3d313.js';init('/wasmtest/wasmtest-230700b50ec3d313_bg.wasm');</script></body></html>
