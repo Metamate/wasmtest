@@ -2,9 +2,20 @@
 
 <head>
     <link data-trunk rel="copy-dir" href="assets" />
+    <link data-trunk rel="inline" href="build/web/styles.css" />
 </head>
+
 <body>
-    <link data-trunk rel="inline" href="build/web/sound.js"/>
+    <link data-trunk rel="inline" href="build/web/sound.js" />
+    <script>
+        document.documentElement.addEventListener('click', requestFullScreen, false);
+
+        function requestFullScreen() {
+            if (!document.fullscreenElement) {
+                document.querySelector('canvas').requestFullscreen();
+            }
+        }
+    </script>
 </body>
 
 </html>
