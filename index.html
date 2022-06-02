@@ -1,21 +1,22 @@
 <html>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link data-trunk rel="copy-dir" href="assets" />
     <link data-trunk rel="inline" href="build/web/styles.css" />
 </head>
 
 <body>
     <link data-trunk rel="inline" href="build/web/sound.js" />
-    <script>
-        document.documentElement.addEventListener('click', requestFullScreen, false);
 
-        function requestFullScreen() {
-            if (!document.fullscreenElement) {
-                document.querySelector('canvas').requestFullscreen();
-            }
-        }
-    </script>
+    <div><img id="loading" src="assets/loading.svg"></div>
+    <div id="wrapper">
+        <div id="container">
+            <button id="fullscreen"><img src="assets/fullscreen.svg"></button>
+        </div>
+    </div>
+
+    <link data-trunk rel="inline" href="build/web/setup.js" />
 </body>
 
 </html>

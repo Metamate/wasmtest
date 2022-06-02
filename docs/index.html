@@ -1,7 +1,19 @@
 <html><head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <style type="text/css">body {
-    background: linear-gradient(
+    <style type="text/css">html,
+body,
+canvas {
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+body {
+  background: linear-gradient(
             135deg,
             white 0%,
             white 49%,
@@ -10,20 +22,50 @@
             white 51%,
             white 100%
     ) repeat;
-    background-size: 20px 20px;
-    margin: 0;
+  background-size: 20px 20px;
 }
 canvas {
-    background-color: white;
-    width: 100% !important;
-    height: auto !important;
-    object-fit: cover;
+  background: #000;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  display: none;
 }
-
-@media all and (display-mode: fullscreen) {
-    canvas {
-        height: 100% !important;
-    }    
+#container {
+  border: 0;
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+#wrapper {
+  border: 1px solid #000;
+  display: none;
+  margin: 20px;
+  max-height: calc(100% - 90px);
+}
+#fullscreen {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  bottom: -60px;
+  right: 10px;
+  opacity: 0.5;
+  transition: opacity 0.5s;
+  cursor: pointer;
+  background: transparent;
+  padding: 0;
+  border: 0;
+}
+#fullscreen img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+#fullscreen:hover {
+  opacity: 1;
+}
+#loading {
+  margin-top: 50px;
 }</style>
 
 <link rel="preload" href="/wasmtest/wasmtest-230700b50ec3d313_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
@@ -93,15 +135,65 @@ canvas {
   });
 })();
 </script>
-    <script>
-        document.documentElement.addEventListener('click', requestFullScreen, false);
 
-        function requestFullScreen() {
-            if (!document.fullscreenElement) {
-                document.querySelector('canvas').requestFullscreen();
-            }
-        }
-    </script>
+    <div><img id="loading" src="assets/loading.svg"></div>
+    <div id="wrapper">
+        <div id="container">
+            <button id="fullscreen"><img src="assets/fullscreen.svg"></button>
+        </div>
+    </div>
+
+    <script>let container = document.querySelector("#container");
+let wrapper = document.querySelector("#wrapper");
+let canvas;
+
+let canvasWidth;
+let canvasHeight;
+
+document
+  .querySelector("#fullscreen")
+  .addEventListener("click", requestFullScreen, false);
+
+function requestFullScreen() {
+  if (!document.fullscreenElement) {
+    canvas.requestFullscreen();
+  }
+}
+
+window.addEventListener(
+  "load",
+  function () {
+    const interval = setInterval(() => {
+      canvas = document.querySelector("canvas");
+
+      if (canvas) {
+        clearInterval(interval);
+        canvas.onselectstart = () => {
+          return false;
+        };
+
+        canvasWidth = canvas.getAttribute("width");
+        canvasHeight = canvas.getAttribute("height");
+
+        screen.orientation.addEventListener("change", (event) => {
+          if (document.fullscreenElement) {
+            document.exitFullscreen();
+          }
+        });
+
+        container.style.maxWidth = canvasWidth + "px";
+        container.style.maxHeight = canvasHeight + "px";
+
+        container.appendChild(canvas);
+        document.querySelector("#loading").style.display = "none";
+        canvas.style.display = "block";
+        wrapper.style.display = "block";
+      }
+    }, 50);
+  },
+  false
+);
+</script>
 
 
 <script type="module">import init from '/wasmtest/wasmtest-230700b50ec3d313.js';init('/wasmtest/wasmtest-230700b50ec3d313_bg.wasm');</script></body></html>
